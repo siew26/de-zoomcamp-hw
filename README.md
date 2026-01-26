@@ -12,45 +12,63 @@
 ## Prepare the Data (Q3-Q6)
 ### Virtual Environment Setup
 1. Install tools that can manage virtual env
+
     ```pip install uv```
+
 2. Init virtual env with Python 3.13
+
     ```uv init --python 3.13```
+
 3. Check Python version in virtual env
+
     ```uv run python -V```
+
     ```uv run which python```
     
 ### Jupyter Notebook Setup
 1. Download the files
 2. Install dependencies to work with data and .parquet files
+
     ```uv pip install pandas pyarrow```
         
 3. Add Jupyter to vm:
+
    ```uv add --dev jupyter```
+
 4. Launch jupyter notebook
+
    ```uv run jupyter notebook```
 
 5. Open the link from terminal and create a new notebook (Green_taxi_notebook.ipynb)
 
 6. After completing the notebook, convert notebook to script
+
     ```uv run jupyter nbconvert --to=script Green_taxi_notebook.ipynb```
     
 7. Use the script Green_taxi_ingest.py to ingest data into Postgres:
-     ```uv run python Green_taxi_ingest.py \
+
+     ```
+     uv run python Green_taxi_ingest.py \
             --pg-user=root \                  
             --pg-pass=root \                         
             --pg-host=localhost \                    
             --pg-port=5432 \                          
             --pg-db=green_taxi \                     
             --year=2025 \                      
-            --month=11 ```
+            --month=11 
+    ```
 
 ### Docker Setup for Postgres & pgadmin
 1. Create Docker network to allow containers to communicate:
+
     ```docker network create pg_network```
+
     ```docker network ls```
 
 2. Run Postgres container in network:
-    ```docker run -it --rm \
+
+    ```
+    docker run -it --rm \
         -e POSTGRES_USER="root" \
         -e POSTGRES_PASSWORD="root" \
         -e POSTGRES_DB="green_taxi" \
@@ -62,14 +80,16 @@
     ```
     
 3. Run pgadmin in same network
-    ```docker run -it \
+    ```
+    docker run -it \
         -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
         -e PGADMIN_DEFAULT_PASSWORD="root" \
         -v pgadmin_data:/var/lib/pgadmin \
         -p 8085:80 \
         --network=pg_network \
         --name pgadmin \
-        dpage/pgadmin4```
+        dpage/pgadmin4
+    ```
 
     
 ## Question 3. Counting short trips
