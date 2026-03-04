@@ -1,0 +1,20 @@
+FROM python:3.13.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY load_yellow_taxi_data.py .
+
+# Copy service account key
+# COPY keys/service_account.json /secrets/key.json
+
+# Set credentials env var
+# ENV GOOGLE_APPLICATION_CREDENTIALS=/secrets/key.json
+
+# Run script
+CMD ["python", "load_yellow_taxi_data.py"]
